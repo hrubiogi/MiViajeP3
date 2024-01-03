@@ -2,9 +2,13 @@
   
   import { initializeApp } from 'firebase/app';
   import { getFirestore } from "firebase/firestore";
-  // import {...} from "firebase/functions";
+  import { getMessaging, getToken } from "firebase/messaging";
+
   // import {...} from "firebase/storage";
   
+  const vapidKey = "BNsfVyshfqEwxKymDJNvmfcNPNrw7r9l8fI5F0MCXzfFvEP6jvwSrsjwyCvvAcdJsumxS_FLCmKE6q9ZuSZ0vFQ"
+
+
   // Initialize Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyB4rqztaiHd9-9I9cYdkkIP8tkwFHG5ipQ",
@@ -16,5 +20,20 @@
     measurementId: "G-72MLM376HD"
   };
   
-  const app = initializeApp(firebaseConfig);
+  export const app = initializeApp(firebaseConfig);
   export const db = getFirestore(app);
+  export const messaging = getMessaging();
+
+  getToken(messaging, { vapidKey })
+  .then((currentToken) => {
+    if (currentToken) {
+      // Send the token to your server and update the UI if necessary
+    } else {
+      // Show permission request UI
+      console.log('No registration token available. Request permission to generate one.');
+    }
+  }).catch((err) => {
+    console.log('An error occurred while retrieving token. ', err);
+    // ...
+  });
+ 
